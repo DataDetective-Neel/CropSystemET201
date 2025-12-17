@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#00F5FF">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="AgriAI Crop">
+    <title>AgriAI Crop - Mobile App</title>
+    <link rel="manifest" href="/static/manifest.json">
+    <link rel="apple-touch-icon" href="/static/icon-192.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #050508 0%, #0A0A0F 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 0;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .app-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 10px;
+            padding-bottom: 20px;
+        }
+
+        /* Header */
+        .app-header {
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .app-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00F5FF, #9D4EDD);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .app-title i {
+            font-size: 1.8rem;
+        }
+
+        /* Card Styles */
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #00F5FF;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Input Form */
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #00F5FF;
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 0 3px rgba(0, 245, 255, 0.1);
+        }
+
+        select.input-field {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        /* Button */
+        .btn-primary {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #00F5FF, #9D4EDD);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(0, 245, 255, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #00F5FF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Results */
+        .results {
+            display: none;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .result-card {
+            background: rgba(0, 245, 255, 0.1);
+            border-left: 4px solid #00F5FF;
+            margin-bottom: 15px;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .result-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #00F5FF;
+        }
+
+        .result-badge {
+            background: #00F5FF;
+            color: #0A0A0F;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .crop-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 10px 0;
+            background: linear-gradient(135deg, #00F5FF, #9D4EDD);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .confidence {
+            display: inline-block;
+            background: rgba(0, 245, 255, 0.2);
+            color: #00F5FF;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid rgba(0, 245, 255, 0.3);
+            margin: 5px 0;
+        }
+
+        .result-details {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+
+        .consensus-box {
+            background: linear-gradient(135deg, #00F5FF, #9D4EDD);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .consensus-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .consensus-crop {
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 10px 0;
+        }
+
+        /* Grid for inputs */
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .input-grid.full {
+            grid-template-columns: 1fr;
+        }
+
+        /* Error Message */
+        .error {
+            background: rgba(255, 0, 84, 0.2);
+            border-left: 4px solid #FF0054;
+            color: #FF0054;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            display: none;
+        }
+
+        .error.active {
+            display: block;
+        }
+
+        /* Safe area for notched devices */
+        @supports (padding: max(0px)) {
+            .app-container {
+                padding-left: max(10px, env(safe-area-inset-left));
+                padding-right: max(10px, env(safe-area-inset-right));
+                padding-bottom: max(20px, env(safe-area-inset-bottom));
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="app-header">
+            <div class="app-title">
+                <i class="fas fa-seedling"></i>
+                AgriAI Crop Mobile
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">
+                <i class="fas fa-edit"></i>
+                Input Parameters
+            </div>
+
+            <form id="predictionForm">
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label class="input-label">Region</label>
+                        <select class="input-field" name="region" required>
+                            <option value="punjab">Punjab</option>
+                            <option value="haryana">Haryana</option>
+                            <option value="rajasthan">Rajasthan</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Season</label>
+                        <select class="input-field" name="season" required>
+                            <option value="rabi">Rabi (Winter)</option>
+                            <option value="kharif" selected>Kharif (Monsoon)</option>
+                            <option value="zaid">Zaid (Summer)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label class="input-label">Nitrogen (N) ppm</label>
+                        <input type="number" class="input-field" name="N" value="120" required min="0" max="200">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Phosphorus (P) ppm</label>
+                        <input type="number" class="input-field" name="P" value="60" required min="0" max="100">
+                    </div>
+                </div>
+
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label class="input-label">Potassium (K) ppm</label>
+                        <input type="number" class="input-field" name="K" value="45" required min="0" max="100">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Temperature (°C)</label>
+                        <input type="number" class="input-field" name="Temperature" value="28" required min="0" max="50">
+                    </div>
+                </div>
+
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label class="input-label">Humidity (%)</label>
+                        <input type="number" class="input-field" name="Humidity" value="65" required min="0" max="100">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Rainfall (mm)</label>
+                        <input type="number" class="input-field" name="Rainfall" value="150" required min="0" max="500">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Soil pH</label>
+                    <input type="number" class="input-field" name="pH" value="7.2" step="0.1" required min="5.0" max="9.0">
+                </div>
+
+                <button type="submit" class="btn-primary" id="submitBtn">
+                    <i class="fas fa-brain"></i>
+                    Analyze Crop
+                </button>
+            </form>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Analyzing with AI models...</p>
+            </div>
+
+            <div class="error" id="error"></div>
+        </div>
+
+        <div class="results" id="results">
+            <div class="card">
+                <div class="section-title">
+                    <i class="fas fa-chart-line"></i>
+                    AI Predictions
+                </div>
+
+                <div id="resultsContent"></div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        
+        document.getElementById('predictionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Show loading, hide results and error
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('results').classList.remove('active');
+            document.getElementById('error').classList.remove('active');
+            document.getElementById('submitBtn').disabled = true;
+            
+            // Get form data
+            const formData = new FormData(this);
+            const data = {
+                region: formData.get('region'),
+                season: formData.get('season'),
+                N: parseInt(formData.get('N')),
+                P: parseInt(formData.get('P')),
+                K: parseInt(formData.get('K')),
+                Temperature: parseInt(formData.get('Temperature')),
+                Humidity: parseInt(formData.get('Humidity')),
+                Rainfall: parseInt(formData.get('Rainfall')),
+                pH: parseFloat(formData.get('pH')),
+                SoilType: 'Clay',
+                Irrigation: 'Irrigated'
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/predict`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('submitBtn').disabled = false;
+                
+                if (result.success) {
+                    displayResults(result);
+                } else {
+                    showError(result.error || 'Prediction failed');
+                }
+            } catch (error) {
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('submitBtn').disabled = false;
+                showError('Network error: ' + error.message);
+            }
+        });
+
+        function displayResults(data) {
+            const resultsContent = document.getElementById('resultsContent');
+            const predictions = data.predictions;
+            
+            let html = '';
+            
+            // Model 1
+            if (predictions.model1 && predictions.model1.crop) {
+                html += `
+                    <div class="result-card">
+                        <div class="result-header">
+                            <div class="result-title">Master Model</div>
+                            <div class="result-badge">99.2%</div>
+                        </div>
+                        <div class="crop-name">${predictions.model1.crop}</div>
+                        <div class="confidence">${predictions.model1.confidence}</div>
+                        <div class="result-details">
+                            ${predictions.model1.model_type}<br>
+                            Soil Moisture: ${predictions.model1.soil_moisture}%
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Model 2
+            if (predictions.model2 && predictions.model2.crop) {
+                html += `
+                    <div class="result-card">
+                        <div class="result-header">
+                            <div class="result-title">Regional Model</div>
+                            <div class="result-badge">Regional</div>
+                        </div>
+                        <div class="crop-name">${predictions.model2.crop}</div>
+                        <div class="confidence">${predictions.model2.confidence}</div>
+                        <div class="result-details">
+                            ${predictions.model2.model_type}<br>
+                            Soil Moisture: ${predictions.model2.soil_moisture}%
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Model 3
+            if (predictions.model3 && predictions.model3.crop) {
+                html += `
+                    <div class="result-card">
+                        <div class="result-header">
+                            <div class="result-title">Seasonal Model</div>
+                            <div class="result-badge">Seasonal</div>
+                        </div>
+                        <div class="crop-name">${predictions.model3.crop}</div>
+                        <div class="confidence">${predictions.model3.confidence}</div>
+                        <div class="result-details">
+                            ${predictions.model3.model_type}<br>
+                            Soil Moisture: ${predictions.model3.soil_moisture}%
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Consensus
+            if (predictions.consensus) {
+                html += `
+                    <div class="consensus-box">
+                        <div class="consensus-title">Recommended Crop</div>
+                        <div class="consensus-crop">${predictions.consensus}</div>
+                        <p style="font-size: 0.85rem; opacity: 0.9; margin-top: 5px;">
+                            Based on triple AI validation
+                        </p>
+                    </div>
+                `;
+            }
+            
+            resultsContent.innerHTML = html;
+            document.getElementById('results').classList.add('active');
+            
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('active');
+        }
+
+        // Register service worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/static/service-worker.js')
+                    .then(() => console.log('Service Worker registered'))
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+    </script>
+</body>
+</html>
+

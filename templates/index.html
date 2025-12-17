@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>3-Model Crop Recommendation System</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .form-group { margin: 20px 0; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: #333; }
+        input, select { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 5px; font-size: 16px; }
+        input:focus, select:focus { border-color: #4CAF50; outline: none; }
+        button { background: #4CAF50; color: white; padding: 15px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; width: 100%; margin-top: 20px; }
+        button:hover { background: #45a049; }
+        .results { margin-top: 30px; padding: 20px; border: 2px solid #4CAF50; border-radius: 10px; background: #f9fff9; }
+        .model-result { margin: 15px 0; padding: 15px; background: white; border-radius: 5px; border-left: 4px solid #4CAF50; }
+        .model-title { color: #2c3e50; margin-bottom: 10px; }
+        .success { color: #27ae60; font-weight: bold; }
+        .error { color: #e74c3c; }
+        h1 { color: #2c3e50; text-align: center; margin-bottom: 30px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>3-Model Crop Recommendation System</h1>
+        
+        <form id="predictionForm">
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Region:</label>
+                    <select name="region" required>
+                        <option value="punjab">Punjab</option>
+                        <option value="haryana">Haryana</option>
+                        <option value="rajasthan">Rajasthan</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Season:</label>
+                    <select name="season" required>
+                        <option value="rabi">Rabi (Winter)</option>
+                        <option value="kharif" selected>Kharif (Monsoon)</option>
+                        <option value="zaid">Zaid (Summer)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Nitrogen (N):</label>
+                    <input type="number" name="N" value="100" required min="0" max="200">
+                </div>
+
+                <div class="form-group">
+                    <label>Phosphorus (P):</label>
+                    <input type="number" name="P" value="50" required min="0" max="100">
+                </div>
+
+                <div class="form-group">
+                    <label>Potassium (K):</label>
+                    <input type="number" name="K" value="40" required min="0" max="100">
+                </div>
+
+                <div class="form-group">
+                    <label>Temperature (C):</label>
+                    <input type="number" name="Temperature" value="25" required min="0" max="50">
+                </div>
+
+                <div class="form-group">
+                    <label>Humidity (%):</label>
+                    <input type="number" name="Humidity" value="60" required min="0" max="100">
+                </div>
+
+                <div class="form-group">
+                    <label>Rainfall (mm):</label>
+                    <input type="number" name="Rainfall" value="100" required min="0" max="500">
+                </div>
+
+                <div class="form-group">
+                    <label>Soil Moisture (%):</label>
+                    <input type="number" name="Moisture" value="20" required min="0" max="100">
+                </div>
+
+                <div class="form-group">
+                    <label>Soil pH:</label>
+                    <input type="number" name="pH" value="7.0" step="0.1" required min="5.0" max="9.0">
+                </div>
+            </div>
+
+            <button type="submit">Get Crop Recommendations</button>
+        </form>
+
+        <div id="results" class="results" style="display:none;">
+            <h2>Recommendation Results</h2>
+            <div id="model1" class="model-result"></div>
+            <div id="model2" class="model-result"></div>
+            <div id="model3" class="model-result"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Convert numeric values
+            data.N = parseInt(data.N);
+            data.P = parseInt(data.P);
+            data.K = parseInt(data.K);
+            data.Temperature = parseInt(data.Temperature);
+            data.Humidity = parseInt(data.Humidity);
+            data.Rainfall = parseInt(data.Rainfall);
+            data.Moisture = parseInt(data.Moisture);
+            data.pH = parseFloat(data.pH);
+            data.SoilType = 'Clay';
+            data.Irrigation = 'Irrigated';
+            
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('results').style.display = 'block';
+                    
+                    // Display results from all 3 models
+                    displayModelResult('model1', result.predictions.model1, 'Model 1 - High Accuracy (99.2%)');
+                    displayModelResult('model2', result.predictions.model2, 'Model 2 - Regional Specialized');
+                    displayModelResult('model3', result.predictions.model3, 'Model 3 - Seasonal Specialized');
+                } else {
+                    alert('Error: ' + result.error);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+
+        function displayModelResult(elementId, result, title) {
+            const element = document.getElementById(elementId);
+            if (result.error) {
+                element.innerHTML = '<h3 class="model-title">' + title + '</h3><p class="error">' + result.error + '</p>';
+            } else {
+                element.innerHTML = '<h3 class="model-title">' + title + '</h3><p><strong>Recommended Crop:</strong> <span class="success">' + result.crop + '</span></p><p><strong>Confidence:</strong> ' + result.confidence + '</p><p><strong>Model Type:</strong> ' + result.model_type + '</p>';
+            }
+        }
+    </script>
+</body>
+</html>

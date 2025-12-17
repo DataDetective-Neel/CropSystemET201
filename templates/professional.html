@@ -1,0 +1,2200 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriNeuro AI | Cognitive Agriculture Intelligence Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --neural-primary: #00F5FF;
+            --neural-secondary: #9D4EDD;
+            --neural-accent: #FF006E;
+            --neural-success: #38B000;
+            --neural-warning: #FF9E00;
+            --neural-danger: #FF0054;
+            --cyber-dark: #0A0A0F;
+            --cyber-darker: #050508;
+            --cyber-card: rgba(255, 255, 255, 0.05);
+            --cyber-border: rgba(255, 255, 255, 0.1);
+            --cyber-glow: 0 0 20px rgba(0, 245, 255, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--cyber-darker) 0%, var(--cyber-dark) 100%);
+            color: white;
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .cyber-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Cyber Glass Effect */
+        .cyber-card {
+            background: var(--cyber-card);
+            border: 1px solid var(--cyber-border);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 245, 255, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .cyber-card:hover::before {
+            left: 100%;
+        }
+
+        .cyber-card:hover {
+            border-color: var(--neural-primary);
+            box-shadow: var(--cyber-glow);
+            transform: translateY(-5px);
+        }
+
+        /* Header */
+        .cyber-header {
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--cyber-border);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--neural-primary), var(--neural-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo i {
+            font-size: 2.2rem;
+        }
+
+        /* Hero Section */
+        .cyber-hero {
+            padding: 160px 0 80px;
+            text-align: center;
+            position: relative;
+        }
+
+        .cyber-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(0, 245, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(157, 78, 221, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--neural-primary), var(--neural-secondary), var(--neural-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin: 4rem auto;
+            max-width: 1000px;
+        }
+
+        .stat-card {
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid var(--cyber-border);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--neural-primary);
+            transform: translateY(-3px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--neural-primary), var(--neural-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin: 2rem 0 4rem;
+        }
+
+        .input-section, .results-section {
+            padding: 2.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--cyber-border);
+        }
+
+        .section-header i {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--neural-primary), var(--neural-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        /* Input Form */
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cyber-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--cyber-border);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .cyber-input:focus {
+            outline: none;
+            border-color: var(--neural-primary);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 0 3px rgba(0, 245, 255, 0.1);
+        }
+
+        .input-unit {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .analyze-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--neural-primary), var(--neural-secondary));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 245, 255, 0.4);
+        }
+
+        .analyze-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+        }
+
+        .models-grid {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .model-card {
+            padding: 1.5rem;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid var(--neural-primary);
+            transition: all 0.3s ease;
+        }
+
+        .model-card.premium {
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.1), rgba(157, 78, 221, 0.1));
+            border-left-color: var(--neural-accent);
+        }
+
+        .model-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .model-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .model-badge {
+            background: var(--neural-primary);
+            color: var(--cyber-dark);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .crop-result {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 1rem 0;
+            background: linear-gradient(135deg, var(--neural-primary), var(--neural-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .confidence {
+            display: inline-block;
+            background: rgba(0, 245, 255, 0.2);
+            color: var(--neural-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid rgba(0, 245, 255, 0.3);
+        }
+
+        .model-details {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Consensus Section */
+        .consensus-section {
+            background: linear-gradient(135deg, var(--neural-primary), var(--neural-secondary));
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .consensus-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .consensus-crop {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin: 1rem 0;
+        }
+
+        /* Loading Animation */
+        .cyber-loading {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .neural-loader {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid var(--neural-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-dots {
+            display: inline-block;
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { color: rgba(255,255,255,0); text-shadow: .25em 0 0 rgba(255,255,255,0), .5em 0 0 rgba(255,255,255,0); }
+            40% { color: white; text-shadow: .25em 0 0 rgba(255,255,255,0), .5em 0 0 rgba(255,255,255,0); }
+            60% { text-shadow: .25em 0 0 white, .5em 0 0 rgba(255,255,255,0); }
+            80%, 100% { text-shadow: .25em 0 0 white, .5em 0 0 white; }
+        }
+
+        /* Analysis Info */
+        .analysis-info {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Alerts Section */
+        .alerts-section {
+            margin-top: 2rem;
+        }
+
+        .alert-card {
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border-left: 4px solid;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .alert-card:hover {
+            transform: translateX(5px);
+        }
+
+        .alert-card.warning {
+            border-left-color: var(--neural-warning);
+            background: rgba(255, 158, 0, 0.1);
+        }
+
+        .alert-card.warning.high {
+            border-left-color: var(--neural-danger);
+            background: rgba(255, 0, 84, 0.15);
+            animation: pulse 2s infinite;
+        }
+
+        .alert-card.info {
+            border-left-color: var(--neural-primary);
+            background: rgba(0, 245, 255, 0.1);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .alert-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .alert-icon {
+            font-size: 1.5rem;
+        }
+
+        .alert-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            flex: 1;
+        }
+
+        .alert-severity {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .alert-severity.high {
+            background: var(--neural-danger);
+            color: white;
+        }
+
+        .alert-severity.medium {
+            background: var(--neural-warning);
+            color: var(--cyber-dark);
+        }
+
+        .alert-severity.low {
+            background: var(--neural-primary);
+            color: var(--cyber-dark);
+        }
+
+        .alert-message {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0.8rem;
+            line-height: 1.6;
+        }
+
+        .alert-recommendation {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            font-style: italic;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Fertilizer Suggestions */
+        .fertilizer-section {
+            margin-top: 2rem;
+        }
+
+        .fertilizer-card {
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, rgba(56, 176, 0, 0.1), rgba(0, 245, 255, 0.1));
+            border: 1px solid rgba(56, 176, 0, 0.3);
+            border-left: 4px solid var(--neural-success);
+        }
+
+        .fertilizer-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .fertilizer-nutrient {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--neural-success);
+        }
+
+        .fertilizer-deficiency {
+            background: rgba(255, 158, 0, 0.2);
+            color: var(--neural-warning);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .fertilizer-list {
+            margin-top: 1rem;
+        }
+
+        .fertilizer-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+            border-left: 3px solid var(--neural-success);
+        }
+
+        .fertilizer-name {
+            font-weight: 700;
+            color: var(--neural-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .fertilizer-application {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .fertilizer-benefit {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        .fertilizer-organic {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(56, 176, 0, 0.15);
+            border-radius: 8px;
+            border-left: 3px solid var(--neural-success);
+        }
+
+        .fertilizer-organic-label {
+            font-weight: 700;
+            color: var(--neural-success);
+            margin-bottom: 0.5rem;
+        }
+
+        .fertilizer-organic-content {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        /* Visual Indicators - Improved Design */
+        .indicators-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+            padding: 2rem 0;
+        }
+
+        .indicator-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+            padding: 2rem 1.5rem;
+            border-radius: 18px;
+            border: 1px solid var(--cyber-border);
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .indicator-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--neural-primary), var(--neural-secondary));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .indicator-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--neural-primary);
+            box-shadow: 0 10px 30px rgba(0, 245, 255, 0.2);
+        }
+
+        .indicator-card:hover::before {
+            opacity: 1;
+        }
+
+        .indicator-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--neural-primary), var(--neural-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+        }
+
+        .indicator-label {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            font-weight: 600;
+        }
+
+        .indicator-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin: 1rem 0;
+            background: linear-gradient(135deg, var(--neural-primary), var(--neural-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .indicator-gauge {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1.2rem 0 1rem;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .indicator-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease;
+            position: relative;
+            box-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
+        }
+
+        .indicator-fill.optimal {
+            background: linear-gradient(90deg, var(--neural-success), #4ade80);
+        }
+
+        .indicator-fill.warning {
+            background: linear-gradient(90deg, var(--neural-warning), #fbbf24);
+        }
+
+        .indicator-fill.danger {
+            background: linear-gradient(90deg, var(--neural-danger), #ef4444);
+        }
+
+        .indicator-status {
+            font-size: 0.85rem;
+            margin-top: 0.8rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .indicator-status.optimal {
+            background: rgba(56, 176, 0, 0.25);
+            color: var(--neural-success);
+            border: 1px solid rgba(56, 176, 0, 0.4);
+        }
+
+        .indicator-status.warning {
+            background: rgba(255, 158, 0, 0.25);
+            color: var(--neural-warning);
+            border: 1px solid rgba(255, 158, 0, 0.4);
+        }
+
+        .indicator-status.danger {
+            background: rgba(255, 0, 84, 0.25);
+            color: var(--neural-danger);
+            border: 1px solid rgba(255, 0, 84, 0.4);
+        }
+
+        /* Language Toggle */
+        .language-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(10, 10, 15, 0.95);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            border: 1px solid var(--cyber-border);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .lang-btn:hover {
+            color: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, var(--neural-primary), var(--neural-secondary));
+            color: var(--cyber-dark);
+        }
+
+        /* Chatbot */
+        .chatbot-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, var(--neural-primary), var(--neural-secondary));
+            color: var(--cyber-dark);
+            font-size: 1.6rem;
+            cursor: pointer;
+            box-shadow: 0 12px 30px rgba(0, 245, 255, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1200;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .chatbot-toggle:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(157, 78, 221, 0.4);
+        }
+
+        .chatbot-window {
+            position: fixed;
+            bottom: 110px;
+            right: 30px;
+            width: 340px;
+            max-width: calc(100% - 40px);
+            background: rgba(10, 10, 15, 0.95);
+            border: 1px solid var(--cyber-border);
+            border-radius: 18px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(25px);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1200;
+        }
+
+        .chatbot-header {
+            padding: 1rem 1.2rem;
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.15), rgba(157, 78, 221, 0.15));
+            border-bottom: 1px solid var(--cyber-border);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .chatbot-header i {
+            font-size: 1.4rem;
+            color: var(--neural-primary);
+        }
+
+        .chatbot-title {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .chatbot-subtitle {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .chatbot-messages {
+            padding: 1rem 1.2rem;
+            max-height: 320px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .chat-message.bot .chat-bubble {
+            background: rgba(0, 245, 255, 0.12);
+            border: 1px solid rgba(0, 245, 255, 0.2);
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .chat-message.user {
+            justify-content: flex-end;
+        }
+
+        .chat-message.user .chat-bubble {
+            background: linear-gradient(135deg, var(--neural-primary), var(--neural-secondary));
+            color: var(--cyber-dark);
+        }
+
+        .chat-bubble {
+            padding: 0.75rem 1rem;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            max-width: 230px;
+            box-shadow: 0 10px 25px rgba(0, 245, 255, 0.15);
+        }
+
+        .chatbot-form {
+            padding: 0.9rem 1.2rem 1.1rem;
+            border-top: 1px solid var(--cyber-border);
+            background: rgba(255, 255, 255, 0.02);
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .chatbot-input {
+            flex: 1;
+            border-radius: 12px;
+            border: 1px solid var(--cyber-border);
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            padding: 0.7rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        .chatbot-input:focus {
+            outline: none;
+            border-color: var(--neural-primary);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .chatbot-send {
+            width: 46px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, var(--neural-primary), var(--neural-secondary));
+            color: var(--cyber-dark);
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+        }
+
+        .chatbot-send:hover {
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .chatbot-window {
+                right: 20px;
+                width: calc(100% - 40px);
+            }
+
+            .chatbot-toggle {
+                right: 20px;
+                bottom: 20px;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+
+            .indicators-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cyber-hero {
+                padding: 120px 0 60px;
+            }
+
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+
+            .indicators-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .language-toggle {
+                top: 10px;
+                right: 10px;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .lang-btn {
+                font-size: 0.8rem;
+                padding: 0.3rem 0.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Toggle -->
+    <div class="language-toggle">
+        <button class="lang-btn active" id="langEn" onclick="switchLanguage('en')">English</button>
+        <button class="lang-btn" id="langHi" onclick="switchLanguage('hi')">हिंदी</button>
+    </div>
+
+    <!-- Header -->
+    <header class="cyber-header">
+        <div class="cyber-container">
+            <nav class="navbar">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                    <span data-i18n="app_name">AgriNeuro AI</span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="cyber-hero">
+        <div class="cyber-container">
+            <h1 class="hero-title">Cognitive Agriculture Intelligence</h1>
+            <p class="hero-subtitle">World's first neural network platform delivering 40% yield optimization through AI-powered crop intelligence</p>
+            
+            <div class="stats-grid">
+                <div class="stat-card cyber-card">
+                    <div class="stat-number">99.2%</div>
+                    <div class="stat-label">Prediction Accuracy</div>
+                </div>
+                <div class="stat-card cyber-card">
+                    <div class="stat-number">40%</div>
+                    <div class="stat-label">Yield Increase</div>
+                </div>
+                <div class="stat-card cyber-card">
+                    <div class="stat-number">35%</div>
+                    <div class="stat-label">Cost Reduction</div>
+                </div>
+                <div class="stat-card cyber-card">
+                    <div class="stat-number">3M+</div>
+                    <div class="stat-label">Acres Optimized</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="cyber-container">
+        <div class="main-content">
+            <!-- Input Section -->
+            <div class="cyber-card input-section">
+                <div class="section-header">
+                    <i class="fas fa-microchip"></i>
+                    <h2 class="section-title" data-i18n="input_section_title">Neural Input Matrix</h2>
+                </div>
+                
+                <form id="predictionForm">
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label class="input-label" data-i18n="region_label">REGION</label>
+                            <select class="cyber-input" name="region" id="regionSelect" required>
+                                <option value="punjab" data-i18n="punjab_option">Punjab - Northern Plains</option>
+                                <option value="haryana" data-i18n="haryana_option">Haryana - Agricultural Belt</option>
+                                <option value="rajasthan" data-i18n="rajasthan_option">Rajasthan - Arid Region</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" data-i18n="season_label">GROWING SEASON</label>
+                            <select class="cyber-input" name="season" id="seasonSelect" required>
+                                <option value="rabi" data-i18n="rabi_option">Rabi Season (Winter)</option>
+                                <option value="kharif" selected data-i18n="kharif_option">Kharif Season (Monsoon)</option>
+                                <option value="zaid" data-i18n="zaid_option">Zaid Season (Summer)</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" data-i18n="nitrogen_label">NITROGEN (N)</label>
+                            <div class="input-wrapper">
+                                <input type="number" class="cyber-input" name="N" value="120" required min="0" max="200">
+                                <span class="input-unit">ppm</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" data-i18n="phosphorus_label">PHOSPHORUS (P)</label>
+                            <div class="input-wrapper">
+                                <input type="number" class="cyber-input" name="P" value="60" required min="0" max="100">
+                                <span class="input-unit">ppm</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" data-i18n="potassium_label">POTASSIUM (K)</label>
+                            <div class="input-wrapper">
+                                <input type="number" class="cyber-input" name="K" value="45" required min="0" max="100">
+                                <span class="input-unit">ppm</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" data-i18n="temperature_label">TEMPERATURE</label>
+                            <div class="input-wrapper">
+                                <input type="number" class="cyber-input" name="Temperature" value="28" required min="0" max="50">
+                                <span class="input-unit">°C</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" data-i18n="humidity_label">HUMIDITY</label>
+                            <div class="input-wrapper">
+                                <input type="number" class="cyber-input" name="Humidity" value="65" required min="0" max="100">
+                                <span class="input-unit">%</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" data-i18n="rainfall_label">RAINFALL</label>
+                            <div class="input-wrapper">
+                                <input type="number" class="cyber-input" name="Rainfall" value="150" required min="0" max="500">
+                                <span class="input-unit">mm</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" data-i18n="ph_label">SOIL pH</label>
+                            <div class="input-wrapper">
+                                <input type="number" class="cyber-input" name="pH" value="7.2" step="0.1" required min="5.0" max="9.0">
+                                <span class="input-unit">pH</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="analyze-btn" id="analyzeBtn">
+                        <i class="fas fa-brain"></i>
+                        <span data-i18n="analyze_button">INITIATE NEURAL ANALYSIS</span>
+                    </button>
+                </form>
+
+                <div class="cyber-loading" id="loading" style="display: none;">
+                    <div class="neural-loader"></div>
+                    <p>AgriNeuro AI is processing your agricultural data<span class="loading-dots">...</span></p>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-top: 1rem;">
+                        Analyzing soil composition • Predicting moisture levels • Optimizing crop selection
+                    </p>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="cyber-card results-section" id="resultsSection">
+                <div class="section-header">
+                    <i class="fas fa-chart-network"></i>
+                    <h2 class="section-title" data-i18n="results_section_title">Cognitive Analysis Results</h2>
+                </div>
+
+                <div id="resultsContent">
+                    <!-- Results will be populated here by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="chatbot-toggle" id="chatbotToggle" aria-label="Open AgriNeuro assistant">
+        <i class="fas fa-comments"></i>
+    </button>
+
+    <div class="chatbot-window" id="chatbotWindow" aria-live="polite">
+        <div class="chatbot-header">
+            <i class="fas fa-robot"></i>
+            <div>
+                <div class="chatbot-title">AgriNeuro Assistant</div>
+                <div class="chatbot-subtitle">Ask about soil, crops, or platform help</div>
+            </div>
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="chat-message bot">
+                <div class="chat-bubble">Hello! I'm here to help you interpret soil metrics and use AgriNeuro AI. What would you like to know?</div>
+            </div>
+        </div>
+        <form class="chatbot-form" id="chatbotForm">
+            <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Type your question..." autocomplete="off" required>
+            <button type="submit" class="chatbot-send" aria-label="Send message">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('resultsSection').style.display = 'none';
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Convert numeric values
+            data.N = parseInt(data.N);
+            data.P = parseInt(data.P);
+            data.K = parseInt(data.K);
+            data.Temperature = parseInt(data.Temperature);
+            data.Humidity = parseInt(data.Humidity);
+            data.Rainfall = parseInt(data.Rainfall);
+            data.pH = parseFloat(data.pH);
+            data.SoilType = 'Clay';
+            data.Irrigation = 'Irrigated';
+            
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                // Hide loading
+                document.getElementById('loading').style.display = 'none';
+                
+                if (result.success) {
+                    // Add input data to result for charts
+                    result.input_data = data;
+                    document.getElementById('resultsSection').style.display = 'block';
+                    displayResults(result);
+                } else {
+                    showError(result.error);
+                }
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                showError('Network error: ' + error.message);
+            }
+        });
+
+        function displayResults(data) {
+            const resultsContent = document.getElementById('resultsContent');
+            
+            let html = `
+                <div class="models-grid" style="margin-bottom: 2rem;">
+                    <div class="model-card premium">
+                        <div class="model-header">
+                            <div class="model-title" data-i18n="model1_title">NEURAL MASTER MODEL</div>
+                            <div class="model-badge" data-i18n="model1_badge">99.2% ACCURACY</div>
+                        </div>
+                        <div class="crop-result">${data.predictions.model1.crop}</div>
+                        <div class="confidence">${data.predictions.model1.confidence}</div>
+                        <div class="model-details">
+                            <strong>${data.predictions.model1.model_type}</strong><br>
+                            ${data.predictions.model1.accuracy} | <span data-i18n="soil_moisture_label">Soil Moisture</span>: ${data.predictions.model1.soil_moisture}%<br>
+                            ${data.predictions.model1.features_used}
+                        </div>
+                    </div>
+                    
+                    <div class="model-card">
+                        <div class="model-header">
+                            <div class="model-title" data-i18n="model2_title">REGIONAL INTELLIGENCE</div>
+                            <div class="model-badge" data-i18n="model2_badge">GEO-OPTIMIZED</div>
+                        </div>
+                        <div class="crop-result">${data.predictions.model2.crop}</div>
+                        <div class="confidence">${data.predictions.model2.confidence}</div>
+                        <div class="model-details">
+                            <strong>${data.predictions.model2.model_type}</strong><br>
+                            ${data.predictions.model2.accuracy} | <span data-i18n="soil_moisture_label">Soil Moisture</span>: ${data.predictions.model2.soil_moisture}%<br>
+                            ${data.predictions.model2.features_used}
+                        </div>
+                    </div>
+                    
+                    <div class="model-card">
+                        <div class="model-header">
+                            <div class="model-title" data-i18n="model3_title">SEASONAL PATTERN AI</div>
+                            <div class="model-badge" data-i18n="model3_badge">TIME-SERIES</div>
+                        </div>
+                        <div class="crop-result">${data.predictions.model3.crop}</div>
+                        <div class="confidence">${data.predictions.model3.confidence}</div>
+                        <div class="model-details">
+                            <strong>${data.predictions.model3.model_type}</strong><br>
+                            ${data.predictions.model3.accuracy} | <span data-i18n="soil_moisture_label">Soil Moisture</span>: ${data.predictions.model3.soil_moisture}%<br>
+                            ${data.predictions.model3.features_used}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="consensus-section" style="margin-top: 2rem; margin-bottom: 2rem;">
+                    <div class="consensus-title" data-i18n="consensus_title">COGNITIVE CONSENSUS RECOMMENDATION</div>
+                    <div class="consensus-crop">${data.predictions.consensus}</div>
+                    <p data-i18n="consensus_description">Triple AI validation ensures maximum agricultural optimization</p>
+                </div>`;
+            
+            // Add Alerts Section
+            if (data.alerts && data.alerts.length > 0) {
+                html += `
+                <div class="alerts-section" style="margin-top: 2rem; margin-bottom: 2rem;">
+                    <div class="section-header">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h2 class="section-title" data-i18n="alerts_title">Soil Condition Alerts</h2>
+                    </div>`;
+                
+                data.alerts.forEach((alert, index) => {
+                    const icon = alert.type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle';
+                    const severityKey = `alert_severity_${alert.severity}`;
+                    html += `
+                    <div class="alert-card ${alert.type} ${alert.severity}" data-alert-index="${index}">
+                        <div class="alert-header">
+                            <i class="fas ${icon} alert-icon"></i>
+                            <div class="alert-title" data-i18n-alert="${index}_title">${alert.title}</div>
+                            <div class="alert-severity ${alert.severity}" data-i18n="${severityKey}">${alert.severity}</div>
+                        </div>
+                        <div class="alert-message" data-i18n-alert="${index}_message">${alert.message}</div>
+                        <div class="alert-recommendation">
+                            <strong data-i18n="recommendation_label">Recommendation:</strong> <span data-i18n-alert="${index}_recommendation">${alert.recommendation}</span>
+                        </div>
+                    </div>`;
+                });
+                
+                html += `</div>`;
+            }
+            
+            // Add Fertilizer Suggestions Section
+            if (data.fertilizer_suggestions && data.fertilizer_suggestions.length > 0) {
+                html += `
+                <div class="fertilizer-section">
+                    <div class="section-header">
+                        <i class="fas fa-seedling"></i>
+                        <h2 class="section-title" data-i18n="fertilizer_title">Fertilizer Recommendations</h2>
+                    </div>`;
+                
+                data.fertilizer_suggestions.forEach(suggestion => {
+                    html += `
+                    <div class="fertilizer-card">
+                        <div class="fertilizer-header">
+                            <div class="fertilizer-nutrient">${suggestion.nutrient}</div>
+                            <div class="fertilizer-deficiency">Deficiency: ${suggestion.deficiency}</div>
+                        </div>
+                        <div class="fertilizer-list">`;
+                    
+                    suggestion.fertilizers.forEach(fertilizer => {
+                        html += `
+                            <div class="fertilizer-item">
+                                <div class="fertilizer-name">${fertilizer.name}</div>
+                                <div class="fertilizer-application">Application: ${fertilizer.application}</div>
+                                <div class="fertilizer-benefit">${fertilizer.benefit}</div>
+                            </div>`;
+                    });
+                    
+                    html += `
+                        </div>
+                        <div class="fertilizer-organic">
+                            <div class="fertilizer-organic-label">🌱 Organic Alternatives:</div>
+                            <div class="fertilizer-organic-content">${suggestion.organic}</div>
+                        </div>
+                    </div>`;
+                });
+                
+                html += `</div>`;
+            }
+            
+            // Add Visual Indicators Section with Icons
+            const inputData = data.input_data || {};
+            html += `
+                <div class="indicators-grid" id="indicatorsGrid">
+                    <div class="indicator-card">
+                        <i class="fas fa-atom indicator-icon"></i>
+                        <div class="indicator-label" data-i18n="nitrogen">Nitrogen (N)</div>
+                        <div class="indicator-value">${inputData.N || 0}<span style="font-size: 1rem; opacity: 0.7;"> ppm</span></div>
+                        <div class="indicator-gauge">
+                            <div class="indicator-fill" id="nGauge" style="width: ${Math.min(100, ((inputData.N || 0) / 150) * 100)}%"></div>
+                        </div>
+                        <div class="indicator-status" id="nStatus">Optimal</div>
+                    </div>
+                    <div class="indicator-card">
+                        <i class="fas fa-flask indicator-icon"></i>
+                        <div class="indicator-label" data-i18n="phosphorus">Phosphorus (P)</div>
+                        <div class="indicator-value">${inputData.P || 0}<span style="font-size: 1rem; opacity: 0.7;"> ppm</span></div>
+                        <div class="indicator-gauge">
+                            <div class="indicator-fill" id="pGauge" style="width: ${Math.min(100, ((inputData.P || 0) / 80) * 100)}%"></div>
+                        </div>
+                        <div class="indicator-status" id="pStatus">Optimal</div>
+                    </div>
+                    <div class="indicator-card">
+                        <i class="fas fa-gem indicator-icon"></i>
+                        <div class="indicator-label" data-i18n="potassium">Potassium (K)</div>
+                        <div class="indicator-value">${inputData.K || 0}<span style="font-size: 1rem; opacity: 0.7;"> ppm</span></div>
+                        <div class="indicator-gauge">
+                            <div class="indicator-fill" id="kGauge" style="width: ${Math.min(100, ((inputData.K || 0) / 80) * 100)}%"></div>
+                        </div>
+                        <div class="indicator-status" id="kStatus">Optimal</div>
+                    </div>
+                    <div class="indicator-card">
+                        <i class="fas fa-vial indicator-icon"></i>
+                        <div class="indicator-label" data-i18n="ph_level">pH Level</div>
+                        <div class="indicator-value">${inputData.pH || 7.0}</div>
+                        <div class="indicator-gauge">
+                            <div class="indicator-fill" id="phGauge" style="width: ${Math.min(100, ((inputData.pH || 7.0 - 5) / 4) * 100)}%"></div>
+                        </div>
+                        <div class="indicator-status" id="phStatus">Optimal</div>
+                    </div>
+                    <div class="indicator-card">
+                        <i class="fas fa-thermometer-half indicator-icon"></i>
+                        <div class="indicator-label" data-i18n="temperature">Temperature</div>
+                        <div class="indicator-value">${inputData.Temperature || 0}<span style="font-size: 1rem; opacity: 0.7;">°C</span></div>
+                        <div class="indicator-gauge">
+                            <div class="indicator-fill" id="tempGauge" style="width: ${Math.min(100, ((inputData.Temperature || 0) / 50) * 100)}%"></div>
+                        </div>
+                        <div class="indicator-status" id="tempStatus">Optimal</div>
+                    </div>
+                    <div class="indicator-card">
+                        <i class="fas fa-tint indicator-icon"></i>
+                        <div class="indicator-label" data-i18n="humidity">Humidity</div>
+                        <div class="indicator-value">${inputData.Humidity || 0}<span style="font-size: 1rem; opacity: 0.7;">%</span></div>
+                        <div class="indicator-gauge">
+                            <div class="indicator-fill" id="humGauge" style="width: ${inputData.Humidity || 0}%"></div>
+                        </div>
+                        <div class="indicator-status" id="humStatus">Optimal</div>
+                    </div>
+                </div>
+            `;
+
+            // Add Charts Section with Farmer-Friendly Explanations
+            html += `
+                <div class="charts-section">
+                    <div class="chart-card">
+                        <div class="chart-title">
+                            <i class="fas fa-seedling"></i>
+                            <span data-i18n="npk_levels">Soil Nutrients (NPK)</span>
+                        </div>
+                        <div class="chart-description" data-i18n="npk_description">
+                            <strong>📊 What This Chart Shows:</strong><br>
+                            This shows the amount of Nitrogen (N), Phosphorus (P), and Potassium (K) in your soil. Green line = correct amount. If bar is below green line = that nutrient is low.
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="npkChart"></canvas>
+                        </div>
+                        <div class="chart-help">
+                            <div class="chart-help-title">
+                                <i class="fas fa-lightbulb"></i>
+                                <span data-i18n="npk_help_title">What to Do?</span>
+                            </div>
+                            <div data-i18n="npk_help_text">
+                                • <strong>Low Nitrogen:</strong> Add Urea or Compost<br>
+                                • <strong>Low Phosphorus:</strong> Add DAP or SSP fertilizer<br>
+                                • <strong>Low Potassium:</strong> Add MOP fertilizer
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-title">
+                            <i class="fas fa-cloud-sun"></i>
+                            <span data-i18n="environmental_factors">Weather & Environment</span>
+                        </div>
+                        <div class="chart-description" data-i18n="env_description">
+                            <strong>🌡️ What This Chart Shows:</strong><br>
+                            This shows your field temperature, humidity, rainfall, soil pH, and soil moisture. Bigger area = better. All areas should be equal.
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="envChart"></canvas>
+                        </div>
+                        <div class="chart-help">
+                            <div class="chart-help-title">
+                                <i class="fas fa-lightbulb"></i>
+                                <span data-i18n="env_help_title">What to Check?</span>
+                            </div>
+                            <div data-i18n="env_help_text">
+                                • <strong>Temperature:</strong> 20-30°C is best<br>
+                                • <strong>Humidity:</strong> 50-70% is good<br>
+                                • <strong>Soil Moisture:</strong> Keep 20-35%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Add Historical Trends Section with Farmer-Friendly Explanation
+            html += `
+                <div class="trends-section">
+                    <div class="section-header">
+                        <i class="fas fa-chart-line"></i>
+                        <h2 class="section-title" data-i18n="historical_trends">Soil Condition Over Time</h2>
+                    </div>
+                    <div class="chart-description" data-i18n="trend_description" style="margin-bottom: 1.5rem;">
+                        <strong>📈 What This Chart Shows:</strong><br>
+                        This shows your past analyses. See how your soil nutrients are changing over time. <strong>Blue line</strong> = Nitrogen, <strong>Purple line</strong> = Phosphorus, <strong>Pink line</strong> = Potassium, <strong>Orange line</strong> = Temperature
+                    </div>
+                    <div class="trend-chart-container">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                    <div class="chart-help" style="margin-top: 1.5rem;">
+                        <div class="chart-help-title">
+                            <i class="fas fa-info-circle"></i>
+                            <span data-i18n="trend_help_title">How to Understand?</span>
+                        </div>
+                        <div data-i18n="trend_help_text">
+                            • <strong>Line going up:</strong> Nutrients increasing ✅<br>
+                            • <strong>Line going down:</strong> Nutrients decreasing ⚠️ Add fertilizer<br>
+                            • <strong>Line straight:</strong> Condition stable 👍
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            html += `
+                <div class="analysis-info">
+                    <strong data-i18n="analysis_id">Analysis ID:</strong> ${data.analysis_id} | 
+                    <strong data-i18n="timestamp">Timestamp:</strong> ${data.timestamp} | 
+                    <strong data-i18n="neural_network">Neural Network:</strong> <span data-i18n="active">Active</span>
+                </div>
+            `;
+            
+            resultsContent.innerHTML = html;
+            
+            // Store data for history
+            saveToHistory(inputData, data);
+            
+            // Update indicator statuses
+            updateIndicatorStatuses(inputData);
+            
+            // Initialize charts
+            initializeCharts(inputData, data);
+            
+            // Initialize trend chart
+            initializeTrendChart();
+            
+            // Apply current language to all newly added elements
+            setTimeout(() => {
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    const translation = getTranslation(key);
+                    if (translation && translation.includes('<')) {
+                        el.innerHTML = translation;
+                    } else if (translation) {
+                        el.textContent = translation;
+                    }
+                });
+            }, 100);
+        }
+
+        function showError(message) {
+            const resultsContent = document.getElementById('resultsContent');
+            resultsContent.innerHTML = `
+                <div class="model-card" style="border-left-color: var(--neural-danger);">
+                    <div class="model-header">
+                        <div class="model-title">ANALYSIS FAILED</div>
+                        <div class="model-badge" style="background: var(--neural-danger);">ERROR</div>
+                    </div>
+                    <div class="crop-result" style="-webkit-text-fill-color: var(--neural-danger);">System Error</div>
+                    <div class="model-details">
+                        ${message}<br>
+                        Please check your input and try again.
+                    </div>
+                </div>
+            `;
+            document.getElementById('resultsSection').style.display = 'block';
+        }
+
+        const chatbotToggle = document.getElementById('chatbotToggle');
+        const chatbotWindow = document.getElementById('chatbotWindow');
+        const chatbotForm = document.getElementById('chatbotForm');
+        const chatbotInput = document.getElementById('chatbotInput');
+        const chatbotMessages = document.getElementById('chatbotMessages');
+
+        let chatbotOpen = false;
+
+        chatbotToggle.addEventListener('click', () => {
+            chatbotOpen = !chatbotOpen;
+            chatbotWindow.style.display = chatbotOpen ? 'flex' : 'none';
+            if (chatbotOpen) {
+                chatbotInput.focus();
+            }
+        });
+
+        function appendChatMessage(text, sender = 'bot') {
+            const messageEl = document.createElement('div');
+            messageEl.className = `chat-message ${sender}`;
+
+            const bubble = document.createElement('div');
+            bubble.className = 'chat-bubble';
+            bubble.textContent = text;
+
+            messageEl.appendChild(bubble);
+            chatbotMessages.appendChild(messageEl);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+
+        chatbotForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const message = chatbotInput.value.trim();
+            if (!message) {
+                return;
+            }
+
+            appendChatMessage(message, 'user');
+            chatbotInput.value = '';
+
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message })
+                });
+                const result = await response.json();
+                appendChatMessage(result.reply || "I'm not sure how to help with that, but I'm still learning!", 'bot');
+            } catch (error) {
+                appendChatMessage('Network issue detected. Please check your connection and try again.', 'bot');
+            }
+        });
+
+        chatbotInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                chatbotForm.dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // Chart and Data Management Functions
+        let chartInstances = {};
+
+        function updateIndicatorStatuses(data) {
+            // Update N status
+            const nEl = document.getElementById('nGauge');
+            const nStatus = document.getElementById('nStatus');
+            if (data.N < 50) {
+                nEl.className = 'indicator-fill danger';
+                nStatus.className = 'indicator-status danger';
+                nStatus.textContent = getTranslation('low');
+            } else if (data.N > 150) {
+                nEl.className = 'indicator-fill warning';
+                nStatus.className = 'indicator-status warning';
+                nStatus.textContent = getTranslation('high');
+            } else {
+                nEl.className = 'indicator-fill optimal';
+                nStatus.className = 'indicator-status optimal';
+                nStatus.textContent = getTranslation('optimal');
+            }
+
+            // Update P status
+            const pEl = document.getElementById('pGauge');
+            const pStatus = document.getElementById('pStatus');
+            if (data.P < 30) {
+                pEl.className = 'indicator-fill danger';
+                pStatus.className = 'indicator-status danger';
+                pStatus.textContent = getTranslation('low');
+            } else if (data.P > 80) {
+                pEl.className = 'indicator-fill warning';
+                pStatus.className = 'indicator-status warning';
+                pStatus.textContent = getTranslation('high');
+            } else {
+                pEl.className = 'indicator-fill optimal';
+                pStatus.className = 'indicator-status optimal';
+                pStatus.textContent = getTranslation('optimal');
+            }
+
+            // Update K status
+            const kEl = document.getElementById('kGauge');
+            const kStatus = document.getElementById('kStatus');
+            if (data.K < 30) {
+                kEl.className = 'indicator-fill danger';
+                kStatus.className = 'indicator-status danger';
+                kStatus.textContent = getTranslation('low');
+            } else if (data.K > 80) {
+                kEl.className = 'indicator-fill warning';
+                kStatus.className = 'indicator-status warning';
+                kStatus.textContent = getTranslation('high');
+            } else {
+                kEl.className = 'indicator-fill optimal';
+                kStatus.className = 'indicator-status optimal';
+                kStatus.textContent = getTranslation('optimal');
+            }
+
+            // Update pH status
+            const phEl = document.getElementById('phGauge');
+            const phStatus = document.getElementById('phStatus');
+            if (data.pH < 6.0 || data.pH > 8.0) {
+                phEl.className = 'indicator-fill warning';
+                phStatus.className = 'indicator-status warning';
+                phStatus.textContent = getTranslation('suboptimal');
+            } else {
+                phEl.className = 'indicator-fill optimal';
+                phStatus.className = 'indicator-status optimal';
+                phStatus.textContent = getTranslation('optimal');
+            }
+
+            // Update Temperature status
+            const tempEl = document.getElementById('tempGauge');
+            const tempStatus = document.getElementById('tempStatus');
+            if (data.Temperature < 15 || data.Temperature > 35) {
+                tempEl.className = 'indicator-fill warning';
+                tempStatus.className = 'indicator-status warning';
+                tempStatus.textContent = getTranslation('extreme');
+            } else {
+                tempEl.className = 'indicator-fill optimal';
+                tempStatus.className = 'indicator-status optimal';
+                tempStatus.textContent = getTranslation('optimal');
+            }
+
+            // Update Humidity status
+            const humEl = document.getElementById('humGauge');
+            const humStatus = document.getElementById('humStatus');
+            if (data.Humidity < 40 || data.Humidity > 80) {
+                humEl.className = 'indicator-fill warning';
+                humStatus.className = 'indicator-status warning';
+                humStatus.textContent = getTranslation('suboptimal');
+            } else {
+                humEl.className = 'indicator-fill optimal';
+                humStatus.className = 'indicator-status optimal';
+                humStatus.textContent = getTranslation('optimal');
+            }
+        }
+
+        function initializeCharts(inputData, resultData) {
+            // Destroy existing charts
+            if (chartInstances.npkChart) chartInstances.npkChart.destroy();
+            if (chartInstances.envChart) chartInstances.envChart.destroy();
+
+            // Get current language - ensure it's up to date
+            const isHindi = (localStorage.getItem('agrineuro_lang') || 'en') === 'hi';
+            const npkLabels = isHindi ? ['नाइट्रोजन (N)', 'फॉस्फोरस (P)', 'पोटैशियम (K)'] : ['Nitrogen (N)', 'Phosphorus (P)', 'Potassium (K)'];
+            const npkValueLabel = isHindi ? 'आपकी मिट्टी में मात्रा' : 'Your Soil Amount';
+            const npkOptimalLabel = isHindi ? 'सही मात्रा (लक्ष्य)' : 'Correct Amount (Target)';
+
+            // NPK Chart
+            const npkCtx = document.getElementById('npkChart').getContext('2d');
+            chartInstances.npkChart = new Chart(npkCtx, {
+                type: 'bar',
+                data: {
+                    labels: npkLabels,
+                    datasets: [{
+                        label: npkValueLabel,
+                        data: [inputData.N || 0, inputData.P || 0, inputData.K || 0],
+                        backgroundColor: [
+                            'rgba(0, 245, 255, 0.6)',
+                            'rgba(157, 78, 221, 0.6)',
+                            'rgba(255, 0, 110, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(0, 245, 255, 1)',
+                            'rgba(157, 78, 221, 1)',
+                            'rgba(255, 0, 110, 1)'
+                        ],
+                        borderWidth: 2
+                    }, {
+                        label: npkOptimalLabel,
+                        data: [150, 80, 80],
+                        type: 'line',
+                        borderColor: 'rgba(56, 176, 0, 0.8)',
+                        borderWidth: 3,
+                        borderDash: [5, 5],
+                        fill: false,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'rgba(255, 255, 255, 0.8)'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 200,
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Environmental Factors Chart
+            const soilMoisture = resultData?.predictions?.model1?.soil_moisture || 20;
+            const envLabels = isHindi ? ['तापमान', 'नमी', 'बारिश', 'pH', 'मिट्टी की नमी'] : ['Temperature', 'Humidity', 'Rainfall', 'pH', 'Soil Moisture'];
+            const envValueLabel = isHindi ? 'आपके खेत की स्थिति' : 'Your Field Condition';
+            const envCtx = document.getElementById('envChart').getContext('2d');
+            chartInstances.envChart = new Chart(envCtx, {
+                type: 'radar',
+                data: {
+                    labels: envLabels,
+                    datasets: [{
+                        label: envValueLabel,
+                        data: [
+                            (inputData.Temperature || 0) / 50 * 100,
+                            inputData.Humidity || 0,
+                            (inputData.Rainfall || 0) / 500 * 100,
+                            ((inputData.pH || 7.0) - 5) / 4 * 100,
+                            soilMoisture / 40 * 100
+                        ],
+                        backgroundColor: 'rgba(0, 245, 255, 0.2)',
+                        borderColor: 'rgba(0, 245, 255, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(0, 245, 255, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(0, 245, 255, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'rgba(255, 255, 255, 0.8)'
+                            }
+                        }
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)',
+                                stepSize: 20
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            pointLabels: {
+                                color: 'rgba(255, 255, 255, 0.8)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function saveToHistory(inputData, resultData) {
+            let history = JSON.parse(localStorage.getItem('agrineuro_history') || '[]');
+            const historyEntry = {
+                timestamp: new Date().toISOString(),
+                input: inputData,
+                predictions: resultData.predictions,
+                crop: resultData.predictions.consensus
+            };
+            history.push(historyEntry);
+            // Keep only last 20 entries
+            if (history.length > 20) {
+                history = history.slice(-20);
+            }
+            localStorage.setItem('agrineuro_history', JSON.stringify(history));
+            // Also save last result for language switching
+            localStorage.setItem('agrineuro_last_result', JSON.stringify(resultData));
+        }
+
+        function initializeTrendChart() {
+            const history = JSON.parse(localStorage.getItem('agrineuro_history') || '[]');
+            const trendChartContainer = document.getElementById('trendChart');
+            if (!trendChartContainer) return;
+            
+            if (history.length === 0) {
+                trendChartContainer.parentElement.innerHTML = 
+                    '<p style="text-align: center; color: rgba(255,255,255,0.6); padding: 2rem;">' + 
+                    getTranslation('no_history') + '</p>';
+                return;
+            }
+
+            // Destroy existing chart
+            if (chartInstances.trendChart) chartInstances.trendChart.destroy();
+
+            // Get current language - ensure it's up to date
+            const isHindi = (localStorage.getItem('agrineuro_lang') || 'en') === 'hi';
+            const labels = history.map((entry, idx) => {
+                const date = new Date(entry.timestamp);
+                return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            });
+
+            const trendLabels = isHindi ? {
+                nitrogen: 'नाइट्रोजन (N)',
+                phosphorus: 'फॉस्फोरस (P)',
+                potassium: 'पोटैशियम (K)',
+                temperature: 'तापमान (°C)'
+            } : {
+                nitrogen: 'Nitrogen (N)',
+                phosphorus: 'Phosphorus (P)',
+                potassium: 'Potassium (K)',
+                temperature: 'Temperature (°C)'
+            };
+
+            const trendCtx = document.getElementById('trendChart').getContext('2d');
+            chartInstances.trendChart = new Chart(trendCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: trendLabels.nitrogen,
+                            data: history.map(e => e.input.N),
+                            borderColor: 'rgba(0, 245, 255, 1)',
+                            backgroundColor: 'rgba(0, 245, 255, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: trendLabels.phosphorus,
+                            data: history.map(e => e.input.P),
+                            borderColor: 'rgba(157, 78, 221, 1)',
+                            backgroundColor: 'rgba(157, 78, 221, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: trendLabels.potassium,
+                            data: history.map(e => e.input.K),
+                            borderColor: 'rgba(255, 0, 110, 1)',
+                            backgroundColor: 'rgba(255, 0, 110, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: trendLabels.temperature,
+                            data: history.map(e => e.input.Temperature),
+                            borderColor: 'rgba(255, 158, 0, 1)',
+                            backgroundColor: 'rgba(255, 158, 0, 0.1)',
+                            tension: 0.4,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'rgba(255, 255, 255, 0.8)'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            },
+                            grid: {
+                                drawOnChartArea: false
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)',
+                                maxRotation: 45,
+                                minRotation: 45
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Language Support
+        const translations = {
+            en: {
+                app_name: 'AgriNeuro AI',
+                input_section_title: 'Neural Input Matrix',
+                results_section_title: 'Cognitive Analysis Results',
+                analyze_button: 'INITIATE NEURAL ANALYSIS',
+                region_label: 'REGION',
+                season_label: 'GROWING SEASON',
+                nitrogen_label: 'NITROGEN (N)',
+                phosphorus_label: 'PHOSPHORUS (P)',
+                potassium_label: 'POTASSIUM (K)',
+                temperature_label: 'TEMPERATURE',
+                humidity_label: 'HUMIDITY',
+                rainfall_label: 'RAINFALL',
+                ph_label: 'SOIL pH',
+                punjab_option: 'Punjab - Northern Plains',
+                haryana_option: 'Haryana - Agricultural Belt',
+                rajasthan_option: 'Rajasthan - Arid Region',
+                rabi_option: 'Rabi Season (Winter)',
+                kharif_option: 'Kharif Season (Monsoon)',
+                zaid_option: 'Zaid Season (Summer)',
+                model1_title: 'NEURAL MASTER MODEL',
+                model1_badge: '99.2% ACCURACY',
+                model2_title: 'REGIONAL INTELLIGENCE',
+                model2_badge: 'GEO-OPTIMIZED',
+                model3_title: 'SEASONAL PATTERN AI',
+                model3_badge: 'TIME-SERIES',
+                consensus_title: 'COGNITIVE CONSENSUS RECOMMENDATION',
+                consensus_description: 'Triple AI validation ensures maximum agricultural optimization',
+                alerts_title: 'Soil Condition Alerts',
+                recommendation_label: 'Recommendation:',
+                alert_severity_high: 'High',
+                alert_severity_medium: 'Medium',
+                alert_severity_low: 'Low',
+                soil_moisture_label: 'Soil Moisture',
+                fertilizer_title: 'Fertilizer Recommendations',
+                nitrogen: 'Nitrogen (N)',
+                phosphorus: 'Phosphorus (P)',
+                potassium: 'Potassium (K)',
+                ph_level: 'pH Level',
+                temperature: 'Temperature',
+                humidity: 'Humidity',
+                npk_levels: 'Soil Nutrients (NPK)',
+                environmental_factors: 'Weather & Environment',
+                historical_trends: 'Soil Condition Over Time',
+                analysis_id: 'Analysis ID',
+                timestamp: 'Timestamp',
+                neural_network: 'Neural Network',
+                active: 'Active',
+                optimal: 'Good',
+                low: 'Low - Add Fertilizer',
+                high: 'High - Reduce',
+                suboptimal: 'Needs Improvement',
+                extreme: 'Extreme - Take Action',
+                no_history: 'No historical data available. Run more analyses to see trends.',
+                npk_description: '<strong>📊 What This Chart Shows:</strong><br>This shows the amount of Nitrogen (N), Phosphorus (P), and Potassium (K) in your soil. Green line = correct amount. If bar is below green line = that nutrient is low.',
+                npk_help_title: 'What to Do?',
+                npk_help_text: '• <strong>Low Nitrogen:</strong> Add Urea or Compost<br>• <strong>Low Phosphorus:</strong> Add DAP or SSP fertilizer<br>• <strong>Low Potassium:</strong> Add MOP fertilizer',
+                env_description: '<strong>🌡️ What This Chart Shows:</strong><br>This shows your field temperature, humidity, rainfall, soil pH, and soil moisture. Bigger area = better. All areas should be equal.',
+                env_help_title: 'What to Check?',
+                env_help_text: '• <strong>Temperature:</strong> 20-30°C is best<br>• <strong>Humidity:</strong> 50-70% is good<br>• <strong>Soil Moisture:</strong> Keep 20-35%',
+                trend_description: '<strong>📈 What This Chart Shows:</strong><br>This shows your past analyses. See how your soil nutrients are changing over time. <strong>Blue line</strong> = Nitrogen, <strong>Purple line</strong> = Phosphorus, <strong>Pink line</strong> = Potassium, <strong>Orange line</strong> = Temperature',
+                trend_help_title: 'How to Understand?',
+                trend_help_text: '• <strong>Line going up:</strong> Nutrients increasing ✅<br>• <strong>Line going down:</strong> Nutrients decreasing ⚠️ Add fertilizer<br>• <strong>Line straight:</strong> Condition stable 👍'
+            },
+            hi: {
+                app_name: 'एग्रीन्यूरो AI',
+                input_section_title: 'मिट्टी की जानकारी दर्ज करें',
+                results_section_title: 'विश्लेषण परिणाम',
+                analyze_button: 'विश्लेषण शुरू करें',
+                region_label: 'क्षेत्र',
+                season_label: 'फसल का मौसम',
+                nitrogen_label: 'नाइट्रोजन (N)',
+                phosphorus_label: 'फॉस्फोरस (P)',
+                potassium_label: 'पोटैशियम (K)',
+                temperature_label: 'तापमान',
+                humidity_label: 'नमी',
+                rainfall_label: 'बारिश',
+                ph_label: 'मिट्टी का pH',
+                punjab_option: 'पंजाब - उत्तरी मैदान',
+                haryana_option: 'हरियाणा - कृषि बेल्ट',
+                rajasthan_option: 'राजस्थान - शुष्क क्षेत्र',
+                rabi_option: 'रबी मौसम (सर्दी)',
+                kharif_option: 'खरीफ मौसम (मानसून)',
+                zaid_option: 'जायद मौसम (गर्मी)',
+                model1_title: 'मास्टर AI मॉडल',
+                model1_badge: '99.2% सटीकता',
+                model2_title: 'क्षेत्रीय AI',
+                model2_badge: 'स्थान-अनुकूलित',
+                model3_title: 'मौसमी AI',
+                model3_badge: 'समय-श्रृंखला',
+                consensus_title: 'अंतिम सुझाव',
+                consensus_description: 'तीन AI मॉडलों की सहमति से सर्वोत्तम फसल चुनें',
+                alerts_title: 'मिट्टी की स्थिति चेतावनी',
+                recommendation_label: 'सुझाव:',
+                alert_severity_high: 'उच्च',
+                alert_severity_medium: 'मध्यम',
+                alert_severity_low: 'कम',
+                soil_moisture_label: 'मिट्टी की नमी',
+                fertilizer_title: 'खाद की सिफारिशें',
+                nitrogen: 'नाइट्रोजन (N)',
+                phosphorus: 'फॉस्फोरस (P)',
+                potassium: 'पोटैशियम (K)',
+                ph_level: 'pH स्तर',
+                temperature: 'तापमान',
+                humidity: 'नमी',
+                npk_levels: 'मिट्टी में पोषक तत्व (NPK)',
+                environmental_factors: 'मौसम और पर्यावरण',
+                historical_trends: 'समय के साथ मिट्टी की स्थिति',
+                analysis_id: 'विश्लेषण ID',
+                timestamp: 'समय',
+                neural_network: 'न्यूरल नेटवर्क',
+                active: 'सक्रिय',
+                optimal: 'अच्छा',
+                low: 'कम - खाद डालें',
+                high: 'अधिक - कम करें',
+                suboptimal: 'सुधार की जरूरत',
+                extreme: 'चरम - कार्रवाई करें',
+                no_history: 'कोई ऐतिहासिक डेटा उपलब्ध नहीं है। प्रवृत्तियों को देखने के लिए अधिक विश्लेषण चलाएं।',
+                npk_description: '<strong>📊 यह चार्ट क्या दिखाता है?</strong><br>यह आपकी मिट्टी में नाइट्रोजन (N), फॉस्फोरस (P), और पोटैशियम (K) की मात्रा दिखाता है। हरी रेखा = सही मात्रा। अगर बार हरी रेखा से कम है = उस पोषक तत्व की कमी है।',
+                npk_help_title: 'क्या करें?',
+                npk_help_text: '• <strong>नाइट्रोजन कम:</strong> यूरिया या कम्पोस्ट डालें<br>• <strong>फॉस्फोरस कम:</strong> DAP या SSP खाद डालें<br>• <strong>पोटैशियम कम:</strong> MOP खाद डालें',
+                env_description: '<strong>🌡️ यह चार्ट क्या दिखाता है?</strong><br>यह आपके खेत का तापमान, नमी, बारिश, मिट्टी का pH और मिट्टी की नमी दिखाता है। जितना बड़ा क्षेत्र = उतना बेहतर। सभी क्षेत्र बराबर होना चाहिए।',
+                env_help_title: 'क्या देखें?',
+                env_help_text: '• <strong>तापमान:</strong> 20-30°C सबसे अच्छा<br>• <strong>नमी:</strong> 50-70% सही है<br>• <strong>मिट्टी की नमी:</strong> 20-35% बनाए रखें',
+                trend_description: '<strong>📈 यह चार्ट क्या दिखाता है?</strong><br>यह आपके पिछले विश्लेषणों को दिखाता है। देखें कि आपकी मिट्टी में पोषक तत्व समय के साथ कैसे बदल रहे हैं। <strong>नीली रेखा</strong> = नाइट्रोजन, <strong>बैंगनी रेखा</strong> = फॉस्फोरस, <strong>गुलाबी रेखा</strong> = पोटैशियम, <strong>नारंगी रेखा</strong> = तापमान',
+                trend_help_title: 'कैसे समझें?',
+                trend_help_text: '• <strong>रेखा ऊपर जा रही है:</strong> पोषक तत्व बढ़ रहे हैं ✅<br>• <strong>रेखा नीचे जा रही है:</strong> पोषक तत्व कम हो रहे हैं ⚠️ खाद डालें<br>• <strong>रेखा सीधी है:</strong> स्थिति स्थिर है 👍'
+            }
+        };
+
+        let currentLanguage = localStorage.getItem('agrineuro_lang') || 'en';
+
+        function getTranslation(key) {
+            return translations[currentLanguage][key] || translations.en[key] || key;
+        }
+
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('agrineuro_lang', lang);
+            
+            // Update button states
+            document.getElementById('langEn').classList.toggle('active', lang === 'en');
+            document.getElementById('langHi').classList.toggle('active', lang === 'hi');
+            
+            // Update all translatable elements
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                const translation = getTranslation(key);
+                // Check if translation contains HTML
+                if (translation && translation.includes('<')) {
+                    el.innerHTML = translation;
+                } else if (translation) {
+                    el.textContent = translation;
+                }
+            });
+            
+            // Update select options
+            document.querySelectorAll('select option[data-i18n]').forEach(option => {
+                const key = option.getAttribute('data-i18n');
+                const translation = getTranslation(key);
+                if (translation) {
+                    option.textContent = translation;
+                }
+            });
+            
+            // Refresh charts if they exist
+            const resultsSection = document.getElementById('resultsSection');
+            if (resultsSection && resultsSection.style.display !== 'none') {
+                // Get current input data from form if available
+                const form = document.getElementById('predictionForm');
+                if (form) {
+                    const formData = new FormData(form);
+                    const inputData = {
+                        N: parseInt(formData.get('N') || 0),
+                        P: parseInt(formData.get('P') || 0),
+                        K: parseInt(formData.get('K') || 0),
+                        Temperature: parseInt(formData.get('Temperature') || 0),
+                        Humidity: parseInt(formData.get('Humidity') || 0),
+                        Rainfall: parseInt(formData.get('Rainfall') || 0),
+                        pH: parseFloat(formData.get('pH') || 7.0)
+                    };
+                    
+                    // Re-initialize charts with new language
+                    if (chartInstances.npkChart || chartInstances.envChart) {
+                        // We need resultData, but we can get it from localStorage or recreate
+                        const lastResult = JSON.parse(localStorage.getItem('agrineuro_last_result') || '{}');
+                        if (lastResult.predictions) {
+                            initializeCharts(inputData, lastResult);
+                        }
+                    }
+                    
+                    // Re-initialize trend chart
+                    if (chartInstances.trendChart) {
+                        initializeTrendChart();
+                    }
+                }
+            }
+        }
+
+        // Initialize language on page load - always run to set initial state
+        switchLanguage(currentLanguage);
+        
+        // Also ensure language is set after DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            switchLanguage(currentLanguage);
+        });
+    </script>
+</body>
+</html>
