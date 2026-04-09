@@ -19,3 +19,4 @@ AI-powered crop recommendation using machine learning models.
 - Regional adaptation
 - Seasonal optimization
 - Rule-based fallback system
+-------------------------------------------------
