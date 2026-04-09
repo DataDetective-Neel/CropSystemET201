@@ -11,7 +11,7 @@ pinned: false
 
 # 🌾 AgriAI Crop Recommendation System
 
-AI-powered crop recommendation using machine learning models.
+AI-powered crop recommendation using machine learning model for crop prediction.
 
 ## Features
 - Soil nutrient analysis
