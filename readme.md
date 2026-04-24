@@ -1,6 +1,5 @@
 ---
 title: AgriAI Crop Recommender
-emoji: 🌾
 colorFrom: green
 colorTo: blue
 sdk: gradio
@@ -9,9 +8,9 @@ app_file: app.py
 pinned: false
 ---
 
-# 🌾 AgriAI Crop Recommendation System
+# AgriAI Crop Recommendation System
 
-AI-powered crop recommendation using machine learning model for crop prediction.
+AI-powered crop recommendation using a machine learning model for crop prediction.
 
 ## Features
 - Soil nutrient analysis
